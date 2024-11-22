@@ -27,6 +27,46 @@ app.get(routes.download, async (req, res) => {
     }
 });
 
+app.post('/log-network-performance', (req, res) => {
+    const {
+        droppedRequests,
+        latency,
+        jitter,
+        successfulRequests,
+        totalRequests,
+        downloadSpeed,
+        timestamp,
+    } = req.body;
+
+    if (
+        droppedRequests === undefined ||
+        latency === undefined ||
+        jitter === undefined ||
+        successfulRequests === undefined ||
+        totalRequests === undefined ||
+        downloadSpeed === undefined ||
+        timestamp === undefined
+    ) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const logEntry = {
+        droppedRequests,
+        latency,
+        jitter,
+        successfulRequests,
+        totalRequests,
+        downloadSpeed,
+        timestamp,
+    };
+
+    performanceLogs.push(logEntry);
+
+    console.log('Network performance logged:', logEntry);
+
+    return res.status(200).json({ message: 'Performance data logged successfully' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
