@@ -60,11 +60,7 @@ app.post("/log-network-performance", (req, res) => {
       downloadSpeed,
       timestamp,
     };
-
-    performanceLogs.push(logEntry);
-
     console.log("Network performance logged:", logEntry);
-
     return res
       .status(200)
       .json({ message: "Performance data logged successfully" });
